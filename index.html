@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Museum Kanon Maastricht</title>
+<link rel="preload" as="image" href="muur_zonder_bres.webp">
+<link rel="preload" as="image" href="kanon.webp">
+<link rel="preload" as="image" href="aarden_wal.webp">
 
 <style>
   body {
@@ -227,21 +230,21 @@
 
   <!-- MUUR -->
   <div id="muurContainer">
-    <img id="muurZonder" src="muur_zonder_bres.svg">
-    <img id="muurMet" src="muur_met_bres.svg">
+    <img id="muurZonder" src="muur_zonder_bres.webp" fetchpriority="high">
+    <img id="muurMet">
   </div>
 
   <!-- RECHTER PANEEL -->
   <div id="rechterpaneel"></div>
 
   <!-- AARDEN WAL -->
-  <img id="aardenWal" src="aarden_wal.svg">
+  <img id="aardenWal" src="aarden_wal.webp">
 
   <!-- SCHEIDINGSLIJN -->
   <div id="scheidingslijn"></div>
 
   <!-- KANON FOTO -->
-  <img id="kanon" src="kanon.svg">
+  <img id="kanon" src="kanon.webp" fetchpriority="high">
 
   <!-- KOGEL -->
   <svg id="kogel" viewBox="0 0 20 20">
@@ -276,14 +279,18 @@
 </div>
 
 <!-- geluid -->
-<audio id="schot"   src="schot.mp3"></audio>
-<audio id="inslag"  src="inslag.mp3"></audio>
-<audio id="mis"     src="mis.mp3"></audio>
+<audio id="schot"  src="schot.mp3"  preload="auto"></audio>
+<audio id="inslag" src="inslag.mp3" preload="none"></audio>
+<audio id="mis"    src="mis.mp3"    preload="none"></audio>
 
 <script>
 const knop        = document.getElementById("knop");
 const kogel       = document.getElementById("kogel");
 const muurMet     = document.getElementById("muurMet");
+let muurMetGeladen = false;
+function laadMuurMet() {
+  if (!muurMetGeladen) { muurMet.src = "muur_met_bres.webp"; muurMetGeladen = true; }
+}
 const info        = document.getElementById("info");
 const geluid      = document.getElementById("schot");
 const inslagGeluid = document.getElementById("inslag");
@@ -342,6 +349,8 @@ function reset() {
 }
 
 function vuur() {
+
+  laadMuurMet();
 
   // Reset toestand
   muurMet.style.opacity = 0;
